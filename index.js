@@ -1,25 +1,16 @@
+
 var express = require('express');
 var app = express();
 
+app.get('/hello/:id', function (req, res) {
+  res.send('Hello World!'+req.params.id);
+});
 
-app.use(function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', "http://localhost:3002 ");
+var port = process.env.PORT || 8080;
 
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        next();
-    }
-);
+var server = app.listen(port, function () {
+  var host = server.address().address;
+  var port = server.address().port;
 
-
-	app.get('/', function(request, response) {
-
-	 var user ={
-	 	nom : "Louis",
-	 	prenom : "Sebastien",
-	 	age : "20"
-	 };
-
-	 request.json(user);
-
-	});
+  console.log('Example app listening at http://%s:%s', host, port);
+});
