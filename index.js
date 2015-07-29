@@ -1,7 +1,13 @@
 
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
+// Retrieve
+var MongoClient = require('mongodb').MongoClient;
 
+
+
+app.use(bodyParser());
 
 // Add headers
 app.use(function (req, res, next) {
@@ -25,15 +31,27 @@ app.use(function (req, res, next) {
 
 
 
-app.get('/getUser', function (req, res) {
-  
+/*
+ex input request
 
-  var user = {
-    nom : "louis",
-    prenom : "sebastien",
-    age : "20"
-  }
-  res.json(user);
+
+app.post('/setUser', function(req, res){
+    //ex pour un input 'name'
+    var userName = req.body.name;
+}
+
+*/
+
+
+app.get('/getUser', function (req, res) {
+  // Connect to the db
+MongoClient.connect("mongodb://admin:admin@ds053708.mongolab.com:53708/heroku_c37tjzdd", function(err, db) {
+  if(err) { return console.log(err); }
+    else
+        console.log("vous etes connectes a la mongo !");
+}
+
+
 });
 
 var port = process.env.PORT || 8080;

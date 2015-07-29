@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/inovea/INOVEA-Server",
   "dependencies": {
-    "express": "^4.13.1"
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
+    "mongodb": "^2.0.39"
   }
 }
