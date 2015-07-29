@@ -49,7 +49,7 @@ MongoClient.connect("mongodb://admin:admin@ds053708.mongolab.com:53708/heroku_c3
   if(err) { return console.log(err); }
     else
         console.log("vous etes connectes a la mongo !");
-}
+});
 
 
 });
