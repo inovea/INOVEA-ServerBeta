@@ -1,22 +1,15 @@
 var express = require('express');
 var app = express();
 
-app.get('/', function(req, res){
-	res.send("Hello world from server.js");
+app.set('port', (process.env.PORT || 5000));
+
+
+	app.get('/', function(request, response) {
+	  response.render('pages/index');
+	});
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
 
 
-app.get('/', function(request, response) {
-  response.send('Server is running');
-});
-
-app.get('/getUser', function(req, res){
-
-	alert('getUser');
-	var user ={
-		name : "louis",
-		prenom : "sebastien",
-		age : "20"
-	}
-	res.json(user);
-});
