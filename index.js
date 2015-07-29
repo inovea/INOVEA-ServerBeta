@@ -2,8 +2,15 @@
 var express = require('express');
 var app = express();
 
-app.get('/hello/:id', function (req, res) {
-  res.send('Hello World!'+req.params.id);
+app.get('/getUser', function (req, res) {
+  
+
+  var user = {
+    nom : "louis",
+    prenom : "sebastien",
+    age : "20"
+  }
+  res.json(user);
 });
 
 var port = process.env.PORT || 8080;
