@@ -4,5 +4,13 @@ var app = express();
 
 
 	app.get('/', function(request, response) {
-	  response.render('pages/index');
+	 var user ={
+	 	nom : "Louis",
+	 	prenom : "Sebastien",
+	 	age : "20"
+	 };
+
+	 request.json(user);
+
+
 	});
