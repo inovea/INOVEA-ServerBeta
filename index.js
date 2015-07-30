@@ -2,10 +2,8 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 // Retrieve
-var MongoClient = require('mongodb').MongoClient;
-
-
 
 app.use(bodyParser());
 
@@ -13,7 +11,7 @@ app.use(bodyParser());
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -31,28 +29,54 @@ app.use(function (req, res, next) {
 
 
 
-/*
-ex input request
 
 
-app.post('/setUser', function(req, res){
-    //ex pour un input 'name'
-    var userName = req.body.name;
-}
 
-*/
+mongoose.connect("mongodb://admin:admin@ds053708.mongolab.com:53708/heroku_c37tjzdd");
+var User = mongoose.model('users', {name : String, firstname : String});
 
 
-app.get('/getUser', function (req, res) {
+app.get('/users', function (req, res) {
   // Connect to the db
-MongoClient.connect("mongodb://admin:admin@ds053708.mongolab.com:53708/heroku_c37tjzdd", function(err, db) {
-  if(err) { return console.log(err); }
-    else
-        console.log("vous etes connectes a la mongo !");
+    mongoose.model('users').find(function(err, users){
+        console.dir('[getUsers] called');
+        res.send(users);
+    })      
+
 });
 
 
+app.post('/users', function(req, res){  
+    //ex pour un input 'name'
+    var newUser = new User({ name : req.body.name, firstname : req.body.firstname });
+      newUser.save(function (err, result) {
+        if (err) return handleError(err);
+
+        console.log(result);
+        res.end();
+      });
 });
+
+app.delete('/users', function (req, res) {
+  console.log(req.body.id);
+    mongoose.model('users').findById(req.body.id)
+        .exec(function(err, doc) {
+            if (err || !doc) {
+                res.statusCode = 404;
+                res.send({});
+            } else {
+                doc.remove(function(err) {
+                    if (err) {
+                        res.statusCode = 403;
+                        res.send(err);
+                    } else {
+                        res.send({});
+                    }
+                });
+            }
+        });
+});
+
 
 var port = process.env.PORT || 8080;
 
