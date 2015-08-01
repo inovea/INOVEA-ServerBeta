@@ -47,7 +47,6 @@ app.get('/users', function (req, res) {
 
 
 app.post('/users', function(req, res){  
-    //ex pour un input 'name'
     var newUser = new User({ name : req.body.name, firstname : req.body.firstname });
       newUser.save(function (err, result) {
         if (err) return handleError(err);
