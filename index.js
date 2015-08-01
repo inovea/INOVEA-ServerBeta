@@ -57,24 +57,14 @@ app.post('/users', function(req, res){
       });
 });
 
-app.delete('/users', function (req, res) {
-  console.log(req.body.id);
-    mongoose.model('users').findById(req.body.id)
-        .exec(function(err, doc) {
-            if (err || !doc) {
-                res.statusCode = 404;
-                res.send({});
-            } else {
-                doc.remove(function(err) {
-                    if (err) {
-                        res.statusCode = 403;
-                        res.send(err);
-                    } else {
-                        res.send({});
-                    }
-                });
-            }
-        });
+app.post('/deleteUser', function (req, res) {
+    User.findById(req.body.id, function (err, user) {
+         user.remove(function (err, product) {
+        if (err) return handleError(err);
+        console.log('Object deleted !');
+        res.end();
+    })
+  })
 });
 
 
