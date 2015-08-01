@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 
 app.use(bodyParser());
 
+
 // Add headers
 app.use(function (req, res, next) {
 
@@ -28,61 +29,79 @@ app.use(function (req, res, next) {
 });
 
 
-
-
-
-
+//Connection to database
 mongoose.connect("mongodb://admin:admin@ds053708.mongolab.com:53708/heroku_c37tjzdd");
+
 var User = mongoose.model('users', {name : String, firstname : String});
 
 
-app.get('/users', function (req, res) {
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// USER WEBSERVICES ////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/* 
+  Get users
+  */
+  app.get('/users', function (req, res) {
   // Connect to the db
-    mongoose.model('users').find(function(err, users){
-        console.dir('[getUsers] called');
-        res.send(users);
-    })      
+  mongoose.model('users').find(function(err, users){
+    console.dir('[getUsers] called');
+    res.send(users);
+  })      
 
 });
 
 
-app.post('/users', function(req, res){  
-  console.dir('[addUser] called');
+/* 
+  Add user 
+  */
+  app.post('/users', function(req, res){  
+    console.dir('[addUser] called');
     var newUser = new User({ name : req.body.name, firstname : req.body.firstname });
-      newUser.save(function (err, result) {
+    newUser.save(function (err, result) {
+      if (err) return handleError(err);
+
+      console.log(result);
+      res.end();
+    });
+  });
+
+/* 
+  Delete user 
+  */
+  app.post('/deleteUser', function (req, res) {
+    User.findById(req.body.id, function (err, user) {
+      user.remove(function (err, removedUser) {
         if (err) return handleError(err);
+        console.log('Object deleted !');
 
-        console.log(result);
         res.end();
-      });
-});
-
-app.post('/deleteUser', function (req, res) {
-    User.findById(req.body.id, function (err, user) {
-        user.remove(function (err, product) {
-          if (err) return handleError(err);
-            console.log('Object deleted !');
-
-          res.end();
-        })
+      })
     })
-});
+  });
 
-app.post('/updateUser', function (req, res) {
-  console.dir('[updateUser] called');
+/* 
+  Update user 
+  */
+  app.post('/updateUser', function (req, res) {
+    console.dir('[updateUser] called');
+
 
     User.findById(req.body.id, function (err, user) {
-          if(err)
-            res.send(err);
+      if(err)
+        res.send(err);
+      // Model.update (user found by id, new user, null, function)
+      User.update(user, req.body, null, function(error, result){
+        res.end();
+      })
+    })
+  });
 
-            User.update(user, req.body, null, function(error, result){
-                res.end();
-            })
-        })
-});
 
 
-
+//Select the port 8080 if the serve is launch in local
 var port = process.env.PORT || 8080;
 
 var server = app.listen(port, function () {
@@ -91,3 +110,7 @@ var server = app.listen(port, function () {
 
   console.log('Example app listening at http://%s:%s', host, port);
 });
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////// END USER WEBSERVICES //////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
