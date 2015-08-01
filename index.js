@@ -47,6 +47,7 @@ app.get('/users', function (req, res) {
 
 
 app.post('/users', function(req, res){  
+  console.dir('[addUser] called');
     var newUser = new User({ name : req.body.name, firstname : req.body.firstname });
       newUser.save(function (err, result) {
         if (err) return handleError(err);
@@ -58,13 +59,28 @@ app.post('/users', function(req, res){
 
 app.post('/deleteUser', function (req, res) {
     User.findById(req.body.id, function (err, user) {
-         user.remove(function (err, product) {
-        if (err) return handleError(err);
-        console.log('Object deleted !');
-        res.end();
+        user.remove(function (err, product) {
+          if (err) return handleError(err);
+            console.log('Object deleted !');
+
+          res.end();
+        })
     })
-  })
 });
+
+app.post('/updateUser', function (req, res) {
+  console.dir('[updateUser] called');
+
+    User.findById(req.body.id, function (err, user) {
+          if(err)
+            res.send(err);
+
+            User.update(user, req.body, null, function(error, result){
+                res.end();
+            })
+        })
+});
+
 
 
 var port = process.env.PORT || 8080;
