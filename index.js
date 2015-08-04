@@ -140,7 +140,7 @@ var Errand = mongoose.model('errands', {state : String, dateDebut : Date, dateFi
   Delete errand 
   */
   app.post('/deleteErrand', function (req, res) {
-    Errand.findById(req.body.id, function (err, user) {
+    Errand.findById(req.body.id, function (err, errand) {
       errand.remove(function (err, removedErrand) {
         if (err) return handleError(err);
         console.log('Object deleted !');
