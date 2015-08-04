@@ -33,7 +33,7 @@ app.use(function (req, res, next) {
 mongoose.connect("mongodb://admin:admin@ds053708.mongolab.com:53708/heroku_c37tjzdd");
 
 var User = mongoose.model('users', {name : String, firstname : String, mail : String, password : String, admin : Boolean});
-var Errand = mongoose.model('errands', {state : String, dateDebut : Date, dateFin : Date, duree : String, distance : String, user_id : String });
+var Errand = mongoose.model('errands', {state : String, dateDebut : Date, dateFin : Date, duree : String, distance : String, user_id : String);
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,7 +152,7 @@ var Errand = mongoose.model('errands', {state : String, dateDebut : Date, dateFi
 
 /* 
   Update errand 
-  */
+*/
   app.post('/updateErrand', function (req, res) {
     console.dir('[updateErrand] called');
 
