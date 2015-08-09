@@ -32,8 +32,36 @@ app.use(function (req, res, next) {
 //Connection to database
 mongoose.connect("mongodb://admin:admin@ds053708.mongolab.com:53708/heroku_c37tjzdd");
 
-var User = mongoose.model('users', {name : String, firstname : String, mail : String, password : String, admin : Boolean});
-var Errand = mongoose.model('errands', {state : String, dateDebut : Date, dateFin : Date, duree : String, distance : String, user_id : String});
+var User = mongoose.model('users',
+  { name : String, 
+    firstname : String, 
+    mail : String, 
+    password : String,
+    phone : String,
+    admin : Boolean});
+
+var Errand = mongoose.model('errands',
+  { state : Number, 
+    prev_startDate : Date, //Format date : 2012-12-19T06:01:17.171Z
+    real_startDate : Date, 
+    prev_endDate : Date, 
+    prev_duree : Number,
+    real_duree : Number, 
+    prev_distance : Number, 
+    real_distance : Number, 
+    user_id : String});
+
+var Container = mongoose.model('containers',
+  { name : String, 
+    lat : Number,
+    lng : Number,
+    state : Number,
+    c_type : Number,
+    lastCollect : Date,
+    address : String,
+    alert_id : [String],
+    area_id : String});
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +86,12 @@ var Errand = mongoose.model('errands', {state : String, dateDebut : Date, dateFi
   */
   app.post('/users', function(req, res){  
     console.dir('[addUser] called');
-    var newUser = new User({name : req.body.name, firstname : req.body.firstname, mail : req.body.mail, password : req.body.password, admin : req.body.admin});
+    var newUser = new User({name : req.body.name, 
+      firstname : req.body.firstname, 
+      mail : req.body.mail, 
+      password : req.body.password,
+      phone : req.body.phone,
+      admin : req.body.admin});
     newUser.save(function (err, result) {
       if (err) return handleError(err);
 
@@ -127,7 +160,15 @@ var Errand = mongoose.model('errands', {state : String, dateDebut : Date, dateFi
   */
   app.post('/errands', function(req, res){  
     console.dir('[addErrand] called');
-    var newErrand = new Errand({state : req.body.state, dateDebut : req.body.dateDebut, dateFin : req.body.dateFin, duree : req.body.duree, distance : req.body.distance, user_id : req.body.user_id });
+    var newErrand = new Errand({state : req.body.state, 
+      prev_startDate : req.body.prev_startDate, 
+      real_startDate : req.body.real_startDate, 
+      prev_endDate : req.body.prev_endDate, 
+      prev_duree : req.body.prev_duree,
+      real_duree : req.body.real_duree, 
+      prev_distance : req.body.prev_distance, 
+      real_distance : req.body.real_distance, 
+      user_id : req.body.user_id });
     newErrand.save(function (err, result) {
       if (err) return handleError(err);
 
@@ -160,13 +201,89 @@ var Errand = mongoose.model('errands', {state : String, dateDebut : Date, dateFi
     Errand.findById(req.body.id, function (err, errand) {
       if(err)
         res.send(err);
-      // Model.update (user found by id, new user, null, function)
       Errand.update(errand, req.body, null, function(error, result){
         res.end();
       })
     })
   });
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////// END ERRAND WEBSERVICES //////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// CONTAINER WEBSERVICES ////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/* 
+  Get container
+  */
+  app.get('/containers', function (req, res) {
+  // Connect to the db
+  mongoose.model('containers').find(function(err, containers){
+    console.dir('[getContainers] called');
+    res.send(containers);
+  })      
+
+});
+
+
+/* 
+  Add Container
+  */
+  app.post('/containers', function(req, res){  
+    console.dir('[addContainer] called');
+    var newContainer = new Container({name : req.body.name, 
+      lat : req.body.lat,
+      lng : req.body.lng,
+      state : req.body.state,
+      c_type : req.body.c_type,
+      lastCollect : req.body.lastCollect,
+      address : req.body.address,
+      alert_id : req.body.alert_id,
+      area_id : req.body.area_id});
+    newContainer.save(function (err, result) {
+      if (err) return handleError(err);
+
+      console.log(result);
+      res.end();
+    });
+  });
+
+/* 
+  Delete container
+  */
+  app.post('/deleteContainer', function (req, res) {
+    Container.findById(req.body.id, function (err, container) {
+      container.remove(function (err, removedContainer) {
+        if (err) return handleError(err);
+        console.log('Object deleted !');
+
+        res.end();
+      })
+    })
+  });
+
+/* 
+  Update container
+  */
+  app.post('/updateContainer', function (req, res) {
+    console.dir('[updateContainer] called');
+
+
+    Container.findById(req.body.id, function (err, container) {
+      if(err)
+        res.send(err);
+      Container.update(container, req.body, null, function(error, result){
+        res.end();
+      })
+    })
+  });
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////// END CONTAINER WEBSERVICES //////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //Select the port 8080 if the serve is launch in local
@@ -179,6 +296,3 @@ var server = app.listen(port, function () {
   console.log('Example app listening at http://%s:%s', host, port);
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////// END ERRAND WEBSERVICES //////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
