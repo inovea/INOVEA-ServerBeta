@@ -59,6 +59,7 @@ var Container = mongoose.model('containers',
     c_type : Number,
     lastCollect : Date,
     address : String,
+    comment : String,
     alert_id : [String],
     area_id : String});
 
@@ -240,6 +241,7 @@ var Container = mongoose.model('containers',
       c_type : req.body.c_type,
       lastCollect : req.body.lastCollect,
       address : req.body.address,
+      comment : req.body.comment,
       alert_id : req.body.alert_id,
       area_id : req.body.area_id});
     newContainer.save(function (err, result) {
