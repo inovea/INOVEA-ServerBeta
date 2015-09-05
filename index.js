@@ -156,7 +156,8 @@ var Alert = mongoose.model('alerts',
         res.send(user);
       } else{
         console.log("ERROR : User not found");
-        res.send({req: "connexion", resultCode: 1});
+        //res.send({req: "connexion", resultCode: 1});
+        res.send({});
       }  
     })
   });
