@@ -63,6 +63,19 @@ var Container = mongoose.model('containers',
     alert_id : [String],
     area_id : String});
 
+var Zone = mongoose.model('zones',
+  { name : String, 
+    color : String,
+    url_zone : String });
+
+var Alert = mongoose.model('alerts',
+  { state : Number,
+    description : String,
+    startDate : Date,
+    endDate : Date,
+    user_id : String,
+    container_id : String});
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,6 +142,22 @@ var Container = mongoose.model('containers',
       User.update(user, req.body, null, function(error, result){
         res.end();
       })
+    })
+  });
+
+  /* 
+  Connexion user 
+  */
+  app.post('/connexion', function(req, res){  
+    console.dir('[Connexion] called');
+    mongoose.model('users').findOne({mail: req.body.mail, password: req.body.password}, function(err, user){
+      if(user){
+        console.log("User found");
+        res.send(user);
+      } else{
+        console.log("ERROR : User not found");
+        res.send({req: "connexion", resultCode: 1});
+      }  
     })
   });
 
@@ -268,6 +297,7 @@ var Container = mongoose.model('containers',
 
 /* 
   Update container
+  TODO : REVOIR LA MANIPULATION DU TABLEAU DES ALERTES
   */
   app.post('/updateContainer', function (req, res) {
     console.dir('[updateContainer] called');
@@ -282,9 +312,149 @@ var Container = mongoose.model('containers',
     })
   });
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// END CONTAINER WEBSERVICES //////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// ZONE WEBSERVICES ////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/* 
+  Get zone
+  */
+  app.get('/zones', function (req, res) {
+  // Connect to the db
+  mongoose.model('zones').find(function(err, zones){
+    console.dir('[getZones] called');
+    res.send(zones);
+  })      
+
+});
+
+
+/* 
+  Add Zone
+  */
+  app.post('/zones', function(req, res){  
+    console.dir('[addZone] called');
+    var newZone = new Zone({
+      name : req.body.name, 
+      color : req.body.color,
+      url_zone : req.body.url_zone});
+
+      newZone.save(function (err, result) {
+      if (err) return handleError(err);
+
+      console.log(result);
+      res.end();
+    });
+  });
+
+/* 
+  Delete Zone
+  */
+  app.post('/deleteZone', function (req, res) {
+    Zone.findById(req.body.id, function (err, zone) {
+      zone.remove(function (err, removedZone) {
+        if (err) return handleError(err);
+        console.log('Object deleted !');
+
+        res.end();
+      })
+    })
+  });
+
+/* 
+  Update Zone
+  */
+  app.post('/updateZone', function (req, res) {
+    console.dir('[updateZone] called');
+
+
+    Zone.findById(req.body.id, function (err, zone) {
+      if(err)
+        res.send(err);
+      Zone.update(zone, req.body, null, function(error, result){
+        res.end();
+      })
+    })
+  });
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////// END ZONE WEBSERVICES //////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// ALERT WEBSERVICES ////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/* 
+  Get alert
+  */
+  app.get('/alerts', function (req, res) {
+  // Connect to the db
+  mongoose.model('alerts').find(function(err, alerts){
+    console.dir('[getAlerts] called');
+    res.send(alerts);
+  })      
+
+});
+
+
+/* 
+  Add alert
+  */
+  app.post('/alerts', function(req, res){  
+    console.dir('[addAlert] called');
+    var newAlert = new Alert({
+      state : req.body.state,
+      description : req.body.description,
+      startDate : req.body.startDate,
+      endDate : req.body.endDate,
+      user_id : req.body.user_id,
+      container_id : req.body.container_id});
+
+      newAlert.save(function (err, result) {
+      if (err) return handleError(err);
+
+      console.log(result);
+      res.end();
+    });
+  });
+
+/* 
+  Delete Alert
+  */
+  app.post('/deleteAlert', function (req, res) {
+    Alert.findById(req.body.id, function (err, alert) {
+      alert.remove(function (err, removedAlert) {
+        if (err) return handleError(err);
+        console.log('Object deleted !');
+
+        res.end();
+      })
+    })
+  });
+
+/* 
+  Update Alert
+  */
+  app.post('/updateAlert', function (req, res) {
+    console.dir('[updateAlert] called');
+
+
+    Alert.findById(req.body.id, function (err, alert) {
+      if(err)
+        res.send(err);
+      Alert.update(alert, req.body, null, function(error, result){
+        res.end();
+      })
+    })
+  });
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////// END ALERT WEBSERVICES //////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
