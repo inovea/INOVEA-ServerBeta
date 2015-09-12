@@ -118,7 +118,7 @@ var Alert = mongoose.model('alerts',
   Delete user 
   */
   app.post('/deleteUser', function (req, res) {
-    User.findById(req.body.id, function (err, user) {
+    User.findById(req.body._id, function (err, user) {
       user.remove(function (err, removedUser) {
         if (err) return handleError(err);
         console.log('Object deleted !');
