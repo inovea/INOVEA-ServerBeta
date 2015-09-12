@@ -135,7 +135,7 @@ var Alert = mongoose.model('alerts',
     console.dir('[updateUser] called');
 
 
-    User.findById(req.body.id, function (err, user) {
+    User.findById(req.body._id, function (err, user) {
       if(err)
         res.send(err);
       // Model.update (user found by id, new user, null, function)
