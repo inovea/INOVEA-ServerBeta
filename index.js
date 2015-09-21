@@ -99,8 +99,8 @@ var Alert = mongoose.model('alerts',
   Add user 
   */
   app.post('/users', function(req, res){  
-    console.dir('[addUser] called');
-    var newUser = new User({name : req.body.name, 
+
+    var newUser = new User({//name : req.body.name, 
       firstname : req.body.firstname, 
       mail : req.body.mail, 
       password : req.body.password,
