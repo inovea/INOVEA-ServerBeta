@@ -212,7 +212,7 @@ var Alert = mongoose.model('alerts',
   Delete errand 
   */
   app.post('/deleteErrand', function (req, res) {
-    Errand.findById(req.body.id, function (err, errand) {
+    Errand.findById(req.body._id, function (err, errand) {
       errand.remove(function (err, removedErrand) {
         if (err) return handleError(err);
         console.log('Object deleted !');
@@ -229,7 +229,7 @@ var Alert = mongoose.model('alerts',
     console.dir('[updateErrand] called');
 
 
-    Errand.findById(req.body.id, function (err, errand) {
+    Errand.findById(req.body._id, function (err, errand) {
       if(err)
         res.send(err);
       Errand.update(errand, req.body, null, function(error, result){
@@ -286,7 +286,7 @@ var Alert = mongoose.model('alerts',
   Delete container
   */
   app.post('/deleteContainer', function (req, res) {
-    Container.findById(req.body.id, function (err, container) {
+    Container.findById(req.body._id, function (err, container) {
       container.remove(function (err, removedContainer) {
         if (err) return handleError(err);
         console.log('Object deleted !');
@@ -304,7 +304,7 @@ var Alert = mongoose.model('alerts',
     console.dir('[updateContainer] called');
 
 
-    Container.findById(req.body.id, function (err, container) {
+    Container.findById(req.body._id, function (err, container) {
       if(err)
         res.send(err);
       Container.update(container, req.body, null, function(error, result){
@@ -356,7 +356,7 @@ var Alert = mongoose.model('alerts',
   Delete Zone
   */
   app.post('/deleteZone', function (req, res) {
-    Zone.findById(req.body.id, function (err, zone) {
+    Zone.findById(req.body._id, function (err, zone) {
       zone.remove(function (err, removedZone) {
         if (err) return handleError(err);
         console.log('Object deleted !');
@@ -373,7 +373,7 @@ var Alert = mongoose.model('alerts',
     console.dir('[updateZone] called');
 
 
-    Zone.findById(req.body.id, function (err, zone) {
+    Zone.findById(req.body._id, function (err, zone) {
       if(err)
         res.send(err);
       Zone.update(zone, req.body, null, function(error, result){
@@ -428,7 +428,7 @@ var Alert = mongoose.model('alerts',
   Delete Alert
   */
   app.post('/deleteAlert', function (req, res) {
-    Alert.findById(req.body.id, function (err, alert) {
+    Alert.findById(req.body._id, function (err, alert) {
       alert.remove(function (err, removedAlert) {
         if (err) return handleError(err);
         console.log('Object deleted !');
@@ -445,7 +445,7 @@ var Alert = mongoose.model('alerts',
     console.dir('[updateAlert] called');
 
 
-    Alert.findById(req.body.id, function (err, alert) {
+    Alert.findById(req.body._id, function (err, alert) {
       if(err)
         res.send(err);
       Alert.update(alert, req.body, null, function(error, result){
