@@ -107,8 +107,10 @@ var Alert = mongoose.model('alerts',
       phone : req.body.phone,
       admin : req.body.admin});
       newUser.save(function (err, result) {
-      if (err) return handleError('1');
-      res.send('0');
+      if (err)
+          res.send('1');
+      else
+          res.send('0');
     });
   });
 
