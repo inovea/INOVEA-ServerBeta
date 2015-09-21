@@ -108,8 +108,7 @@ var Alert = mongoose.model('alerts',
       admin : req.body.admin});
       newUser.save(function (err, result) {
       if (err) return handleError(err);
-      console.log(result);
-      res.end();
+      res.send(result);
     });
   });
 
