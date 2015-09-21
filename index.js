@@ -275,10 +275,10 @@ var Alert = mongoose.model('alerts',
       alert_id : req.body.alert_id,
       area_id : req.body.area_id});
     newContainer.save(function (err, result) {
-      if (err) return handleError(err);
-
-      console.log(result);
-      res.end();
+        if (err)
+            res.send('1');
+        else
+            res.send('0');
     });
   });
 
@@ -288,10 +288,10 @@ var Alert = mongoose.model('alerts',
   app.post('/deleteContainer', function (req, res) {
     Container.findById(req.body._id, function (err, container) {
       container.remove(function (err, removedContainer) {
-        if (err) return handleError(err);
-        console.log('Object deleted !');
-
-        res.end();
+          if (err)
+              res.send('1');
+          else
+              res.send('0');
       })
     })
   });
@@ -345,10 +345,10 @@ var Alert = mongoose.model('alerts',
       url_zone : req.body.url_zone});
 
       newZone.save(function (err, result) {
-      if (err) return handleError(err);
-
-      console.log(result);
-      res.end();
+          if (err)
+              res.send('1');
+          else
+              res.send('0');
     });
   });
 
@@ -358,10 +358,10 @@ var Alert = mongoose.model('alerts',
   app.post('/deleteZone', function (req, res) {
     Zone.findById(req.body._id, function (err, zone) {
       zone.remove(function (err, removedZone) {
-        if (err) return handleError(err);
-        console.log('Object deleted !');
-
-        res.end();
+          if (err)
+              res.send('1');
+          else
+              res.send('0');
       })
     })
   });
@@ -417,10 +417,10 @@ var Alert = mongoose.model('alerts',
       container_id : req.body.container_id});
 
       newAlert.save(function (err, result) {
-      if (err) return handleError(err);
-
-      console.log(result);
-      res.end();
+          if (err)
+              res.send('1');
+          else
+              res.send('0');
     });
   });
 
@@ -430,10 +430,10 @@ var Alert = mongoose.model('alerts',
   app.post('/deleteAlert', function (req, res) {
     Alert.findById(req.body._id, function (err, alert) {
       alert.remove(function (err, removedAlert) {
-        if (err) return handleError(err);
-        console.log('Object deleted !');
-
-        res.end();
+          if (err)
+              res.send('1');
+          else
+              res.send('0');
       })
     })
   });
