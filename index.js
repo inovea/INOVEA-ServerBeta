@@ -109,7 +109,7 @@ var Alert = mongoose.model('alerts',
       newUser.save(function (err, result) {
       if (err) return handleError(err);
       console.log(result);
-      res.end(result);
+      res.end();
     });
   });
 
