@@ -106,11 +106,10 @@ var Alert = mongoose.model('alerts',
       password : req.body.password,
       phone : req.body.phone,
       admin : req.body.admin});
-    newUser.save(function (err, result) {
+      newUser.save(function (err, result) {
       if (err) return handleError(err);
-
       console.log(result);
-      res.end();
+      res.end(result);
     });
   });
 
