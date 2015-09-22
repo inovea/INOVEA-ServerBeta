@@ -47,15 +47,16 @@ var Errand = mongoose.model('errands',
     prev_endDate : Date, 
     prev_duree : Number,
     real_duree : Number, 
-    prev_distance : Number, 
-    real_distance : Number, 
+    distance : Number,
     user_id : String});
 
 var Container = mongoose.model('containers',
-  { name : String, 
+  { libelle : String, 
     lat : Number,
     lng : Number,
     state : Number,
+    fillingRate : Number,
+    capacity : Number,
     c_type : Number,
     lastCollect : Date,
     address : String,
@@ -64,16 +65,18 @@ var Container = mongoose.model('containers',
     area_id : String});
 
 var Zone = mongoose.model('zones',
-  { name : String, 
+  { libelle : String, 
     color : String,
     url_zone : String });
 
 var Alert = mongoose.model('alerts',
   { state : Number,
-    description : String,
+    comment : String,
     startDate : Date,
     endDate : Date,
-    user_id : String,
+    a_type : Number,
+    user_id_create : String,
+    user_id_treatment : String,
     container_id : String});
 
 
