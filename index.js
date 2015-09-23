@@ -26,7 +26,7 @@ app.use(function (req, res, next) {
 
     // Pass to next layer of middleware
     next();
-});
+  });
 
 
 //Connection to database
@@ -109,11 +109,11 @@ var Alert = mongoose.model('alerts',
       password : req.body.password,
       phone : req.body.phone,
       admin : req.body.admin});
-      newUser.save(function (err, result) {
+    newUser.save(function (err, result) {
       if (err)
-          res.send('1');
+        res.send('1');
       else
-          res.send('0');
+        res.send('0');
     });
   });
 
@@ -226,7 +226,7 @@ var Alert = mongoose.model('alerts',
 
 /* 
   Update errand 
-*/
+  */
   app.post('/updateErrand', function (req, res) {
     console.dir('[updateErrand] called');
 
@@ -279,10 +279,10 @@ var Alert = mongoose.model('alerts',
       alert_id : req.body.alert_id,
       zone_id : req.body.zone_id});
     newContainer.save(function (err, result) {
-        if (err)
-            res.send('1');
-        else
-            res.send('0');
+      if (err)
+        res.send('1');
+      else
+        res.send('0');
     });
   });
 
@@ -292,10 +292,10 @@ var Alert = mongoose.model('alerts',
   app.post('/deleteContainer', function (req, res) {
     Container.findById(req.body._id, function (err, container) {
       container.remove(function (err, removedContainer) {
-          if (err)
-              res.send('1');
-          else
-              res.send('0');
+        if (err)
+          res.send('1');
+        else
+          res.send('0');
       })
     })
   });
@@ -348,11 +348,11 @@ var Alert = mongoose.model('alerts',
       color : req.body.color,
       url_zone : req.body.url_zone});
 
-      newZone.save(function (err, result) {
-          if (err)
-              res.send('1');
-          else
-              res.send('0');
+    newZone.save(function (err, result) {
+      if (err)
+        res.send('1');
+      else
+        res.send('0');
     });
   });
 
@@ -362,10 +362,10 @@ var Alert = mongoose.model('alerts',
   app.post('/deleteZone', function (req, res) {
     Zone.findById(req.body._id, function (err, zone) {
       zone.remove(function (err, removedZone) {
-          if (err)
-              res.send('1');
-          else
-              res.send('0');
+        if (err)
+          res.send('1');
+        else
+          res.send('0');
       })
     })
   });
@@ -399,23 +399,10 @@ var Alert = mongoose.model('alerts',
   */
   app.get('/alerts', function (req, res) {
   // Connect to the db
-  if(req.body.id){
-    console.log(JSON.stringify(req.body.id));
-    var result = mongoose.model('alerts').findOne({_id: req.body.id});
-    console.log(JSON.stringify(result));
-    if(result){
-      res.send(result);
-    } else{
-      res.send(1);
-    }
-
-  } else{
-    mongoose.model('alerts').find(function(err, alerts){
+  mongoose.model('alerts').find(function(err, alerts){
     console.dir('[getAlerts] called');
     res.send(alerts);
-  })   
-  }
-     
+  })      
 
 });
 
@@ -426,25 +413,33 @@ var Alert = mongoose.model('alerts',
   Add alert
   */
   app.post('/alerts', function(req, res){  
-    console.dir('[addAlert] called');
-    var newAlert = new Alert({
-      state : req.body.state,
-      comment : req.body.comment,
-      a_type : req.body.a_type,
-      startDate : req.body.startDate,
-      endDate : req.body.endDate,
-      user_id_create : req.body.user_id_create,
-      user_id_treatment : req.body.user_id_treatment,
-      container_id : req.body.container_id
-
-    });
-
+    if(req.body.id){
+      console.dir('[addAlert] findOne');
+      var id = req.body.id;
+      console.log("[Serveur] req.body.id : ", JSON.stringify(req.body.id));
+      var alert = mongoose.model('alerts').findOne({'_id': id}, function(err, result){
+            console.log('into mongoose findone');
+            });
+    } else {
+      console.dir('[addAlert] called');
+      var newAlert = new Alert({
+        state : req.body.state,
+        comment : req.body.comment,
+        a_type : req.body.a_type,
+        startDate : req.body.startDate,
+        endDate : req.body.endDate,
+        user_id_create : req.body.user_id_create,
+        user_id_treatment : req.body.user_id_treatment,
+        container_id : req.body.container_id
+      });
       newAlert.save(function (err, result) {
-          if (err)
-              res.send('1');
-          else
-              res.send('0');
-    });
+        if (err)
+          res.send('1');
+        else
+          res.send('0');
+      });
+    }
+    
   });
 
 /* 
@@ -453,10 +448,10 @@ var Alert = mongoose.model('alerts',
   app.post('/deleteAlert', function (req, res) {
     Alert.findById(req.body._id, function (err, alert) {
       alert.remove(function (err, removedAlert) {
-          if (err)
-              res.send('1');
-          else
-              res.send('0');
+        if (err)
+          res.send('1');
+        else
+          res.send('0');
       })
     })
   });
