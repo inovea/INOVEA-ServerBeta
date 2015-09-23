@@ -65,7 +65,7 @@ var Container = mongoose.model('containers',
     area_id : String});
 
 var Zone = mongoose.model('zones',
-  { libelle : String, 
+  { label : String, 
     color : String,
     url_zone : String });
 
@@ -200,8 +200,7 @@ var Alert = mongoose.model('alerts',
       prev_endDate : req.body.prev_endDate, 
       prev_duree : req.body.prev_duree,
       real_duree : req.body.real_duree, 
-      prev_distance : req.body.prev_distance, 
-      real_distance : req.body.real_distance, 
+      distance : req.body.distance, 
       user_id : req.body.user_id });
     newErrand.save(function (err, result) {
       if (err) return handleError(err);
@@ -267,10 +266,13 @@ var Alert = mongoose.model('alerts',
   */
   app.post('/containers', function(req, res){  
     console.dir('[addContainer] called');
-    var newContainer = new Container({name : req.body.name, 
+    var newContainer = new Container({label : req.body.label, 
       lat : req.body.lat,
       lng : req.body.lng,
       state : req.body.state,
+      capacity : req.body.capacity,
+      fillingRate : req.body.fillingRate,
+      capacity : req.body.capacity,
       c_type : req.body.c_type,
       lastCollect : req.body.lastCollect,
       address : req.body.address,
@@ -343,7 +345,7 @@ var Alert = mongoose.model('alerts',
   app.post('/zones', function(req, res){  
     console.dir('[addZone] called');
     var newZone = new Zone({
-      name : req.body.name, 
+      label : req.body.label, 
       color : req.body.color,
       url_zone : req.body.url_zone});
 
@@ -413,11 +415,15 @@ var Alert = mongoose.model('alerts',
     console.dir('[addAlert] called');
     var newAlert = new Alert({
       state : req.body.state,
-      description : req.body.description,
+      comment : req.body.comment,
+      a_type : req.body.a_type,
       startDate : req.body.startDate,
       endDate : req.body.endDate,
-      user_id : req.body.user_id,
-      container_id : req.body.container_id});
+      user_id_create : req.body.user_id_create,
+      user_id_treatment : req.body.user_id_treatment,
+      container_id : req.body.container_id
+
+    });
 
       newAlert.save(function (err, result) {
           if (err)
