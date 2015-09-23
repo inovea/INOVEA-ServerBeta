@@ -266,24 +266,33 @@ var Alert = mongoose.model('alerts',
   */
   app.post('/containers', function(req, res){  
     console.dir('[addContainer] called');
-    var newContainer = new Container({label : req.body.label, 
-      lat : req.body.lat,
-      lng : req.body.lng,
-      state : req.body.state,
-      capacity : req.body.capacity,
-      fillingRate : req.body.fillingRate,
-      c_type : req.body.c_type,
-      lastCollect : req.body.lastCollect,
-      address : req.body.address,
-      comment : req.body.comment,
-      alert_id : req.body.alert_id,
-      zone_id : req.body.zone_id});
-    newContainer.save(function (err, result) {
-      if (err)
-        res.send('1');
-      else
-        res.send('0');
-    });
+    if(req.body.id){
+      var id = req.body.id;
+      console.log("[Serveur] req.body.container_id : ", JSON.stringify(id));
+      var newContainer = mongoose.model('containers').findOne({'_id': id}, function(err, result){
+        console.log('into mongoose findone');
+      });
+    } else {
+
+      var newContainer = new Container({label : req.body.label, 
+        lat : req.body.lat,
+        lng : req.body.lng,
+        state : req.body.state,
+        capacity : req.body.capacity,
+        fillingRate : req.body.fillingRate,
+        c_type : req.body.c_type,
+        lastCollect : req.body.lastCollect,
+        address : req.body.address,
+        comment : req.body.comment,
+        alert_id : req.body.alert_id,
+        zone_id : req.body.zone_id});
+      newContainer.save(function (err, result) {
+        if (err)
+          res.send('1');
+        else
+          res.send('0');
+      });
+    }
   });
 
 /* 
@@ -413,35 +422,25 @@ var Alert = mongoose.model('alerts',
   Add alert
   */
   app.post('/alerts', function(req, res){  
-    if(req.body.id){
-      console.dir('[addAlert] findOne');
-      var id = req.body.id;
-      console.log("[Serveur] req.body.id : ", JSON.stringify(req.body.id));
-      var alert = mongoose.model('alerts').findOne({'_id': id}, function(err, result){
-            console.log('into mongoose findone');
-            });
-    } else {
-      console.dir('[addAlert] called');
-      var newAlert = new Alert({
-        state : req.body.state,
-        comment : req.body.comment,
-        a_type : req.body.a_type,
-        startDate : req.body.startDate,
-        endDate : req.body.endDate,
-        user_id_create : req.body.user_id_create,
-        user_id_treatment : req.body.user_id_treatment,
-        container_id : req.body.container_id
-      });
-      newAlert.save(function (err, result) {
-        if (err)
-          res.send('1');
-        else
-          res.send('0');
-      });
-    }
-    
+    console.dir('[addAlert] called');
+    var newAlert = new Alert({
+      state : req.body.state,
+      comment : req.body.comment,
+      a_type : req.body.a_type,
+      startDate : req.body.startDate,
+      endDate : req.body.endDate,
+      user_id_create : req.body.user_id_create,
+      user_id_treatment : req.body.user_id_treatment,
+      container_id : req.body.container_id
+    });
+    newAlert.save(function (err, result) {
+      if (err)
+        res.send('1');
+      else
+        res.send('0');
+    }); 
   });
-
+ 
 /* 
   Delete Alert
   */
