@@ -51,7 +51,7 @@ var Errand = mongoose.model('errands',
     user_id : String});
 
 var Container = mongoose.model('containers',
-  { libelle : String, 
+  { label : String, 
     lat : Number,
     lng : Number,
     state : Number,
@@ -62,7 +62,7 @@ var Container = mongoose.model('containers',
     address : String,
     comment : String,
     alert_id : [String],
-    area_id : String});
+    zone_id : String});
 
 var Zone = mongoose.model('zones',
   { label : String, 
@@ -272,13 +272,12 @@ var Alert = mongoose.model('alerts',
       state : req.body.state,
       capacity : req.body.capacity,
       fillingRate : req.body.fillingRate,
-      capacity : req.body.capacity,
       c_type : req.body.c_type,
       lastCollect : req.body.lastCollect,
       address : req.body.address,
       comment : req.body.comment,
       alert_id : req.body.alert_id,
-      area_id : req.body.area_id});
+      zone_id : req.body.zone_id});
     newContainer.save(function (err, result) {
         if (err)
             res.send('1');
@@ -401,7 +400,9 @@ var Alert = mongoose.model('alerts',
   app.get('/alerts', function (req, res) {
   // Connect to the db
   if(req.body.id){
+    console.log(JSON.stringify(req.body.id));
     var result = mongoose.model('alerts').findOne({_id: req.body.id});
+    console.log(JSON.stringify(result));
     if(result){
       res.send(result);
     } else{
