@@ -400,12 +400,25 @@ var Alert = mongoose.model('alerts',
   */
   app.get('/alerts', function (req, res) {
   // Connect to the db
-  mongoose.model('alerts').find(function(err, alerts){
+  if(req.body.id){
+    var result = mongoose.model('alerts').findOne({_id: req.body.id});
+    if(result){
+      res.send(result);
+    } else{
+      res.send(1);
+    }
+
+  } else{
+    mongoose.model('alerts').find(function(err, alerts){
     console.dir('[getAlerts] called');
     res.send(alerts);
-  })      
+  })   
+  }
+     
 
 });
+
+
 
 
 /* 
